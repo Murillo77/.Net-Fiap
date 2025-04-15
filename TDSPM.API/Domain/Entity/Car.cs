@@ -14,14 +14,14 @@ namespace TDSPM.API.Domain.Entity
         public Guid BrandId { get; private set; }
         public virtual Brand Brand { get; set; }
 
-        //Relacionamento N..N
-        public virtual ICollection<Accessory> Accessories { get; set; }
+        ////Relacionamento N..N
+        //public virtual ICollection<Accessory> Accessories { get; set; }
 
         public string Motorization { get; private set; }
 
         public MarchType March { get; private set; }
 
-        public Car(string plate, Guid brandId, string motorization, MarchType marchType)
+        private Car(string plate, Guid brandId, string motorization, MarchType marchType)
         {
             VerifyPlate(plate);
 
@@ -51,9 +51,6 @@ namespace TDSPM.API.Domain.Entity
             return new Car(plate, brandId, motorization, marchType);
         }
 
-        public Car()
-        {
-            
-        }
+        private Car(){}
     }    
 }

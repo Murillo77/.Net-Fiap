@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using TDSPM.API.Application.UseCases;
 using TDSPM.API.Domain.Entity;
 using TDSPM.API.Infrastructure.Context;
 using TDSPM.API.Infrastructure.Persistence.Repositories;
@@ -46,6 +47,9 @@ namespace TDSPM.API
 
             builder.Services.AddScoped<IRepository<Car>, Repository<Car>>(); 
             builder.Services.AddScoped<IRepository<Brand>, Repository<Brand>>();
+
+
+            builder.Services.AddScoped<CarUserCase>();
 
             var app = builder.Build();
 

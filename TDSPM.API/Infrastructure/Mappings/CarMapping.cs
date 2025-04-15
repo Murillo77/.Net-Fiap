@@ -8,23 +8,35 @@ namespace TDSPM.API.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<Car> builder)
         {
-            builder.ToTable("CarKeller");
-
-            builder.HasKey("Id");
+            builder
+                .ToTable("Cars1");
 
             builder
-                .Property(car => car.Plate)
-                .HasMaxLength(25)
+                .HasKey(c => c.Id);
+
+            builder
+                .Property(c => c.Plate)
+                .IsRequired()                      // NOT NULL no banco
+                .HasMaxLength(10);                // Limite de caracteres (ABC1234 / ABC1D23)
+
+            builder
+                .Property(c => c.Motorization)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder
+                .Property(c => c.March)
                 .IsRequired();
 
             builder
-                .Property(car => car.BrandId)
+                .Property(c => c.BrandId)
                 .IsRequired();
 
             builder
-                .Property(car => car.Motorization)
-                .HasMaxLength(3)
-                .IsRequired();
+                .HasOne(c => c.Brand)
+                .WithMany()
+                .HasForeignKey(c => c.BrandId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

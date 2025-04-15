@@ -22,36 +22,6 @@ namespace TDSPM.API.Migrations
 
             OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AccessoryCar", b =>
-                {
-                    b.Property<Guid>("AccessoriesId")
-                        .HasColumnType("RAW(16)");
-
-                    b.Property<Guid>("CarsId")
-                        .HasColumnType("RAW(16)");
-
-                    b.HasKey("AccessoriesId", "CarsId");
-
-                    b.HasIndex("CarsId");
-
-                    b.ToTable("AccessoryCar");
-                });
-
-            modelBuilder.Entity("TDSPM.API.Domain.Entity.Accessory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Accessory", (string)null);
-                });
-
             modelBuilder.Entity("TDSPM.API.Domain.Entity.Brand", b =>
                 {
                     b.Property<Guid>("Id")
@@ -65,7 +35,7 @@ namespace TDSPM.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brand", (string)null);
+                    b.ToTable("Brand1", (string)null);
                 });
 
             modelBuilder.Entity("TDSPM.API.Domain.Entity.Car", b =>
@@ -82,34 +52,19 @@ namespace TDSPM.API.Migrations
 
                     b.Property<string>("Motorization")
                         .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("NVARCHAR2(3)");
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)");
 
                     b.Property<string>("Plate")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("NVARCHAR2(25)");
+                        .HasMaxLength(10)
+                        .HasColumnType("NVARCHAR2(10)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
-                    b.ToTable("CarKeller", (string)null);
-                });
-
-            modelBuilder.Entity("AccessoryCar", b =>
-                {
-                    b.HasOne("TDSPM.API.Domain.Entity.Accessory", null)
-                        .WithMany()
-                        .HasForeignKey("AccessoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TDSPM.API.Domain.Entity.Car", null)
-                        .WithMany()
-                        .HasForeignKey("CarsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("Cars1", (string)null);
                 });
 
             modelBuilder.Entity("TDSPM.API.Domain.Entity.Car", b =>
@@ -117,7 +72,7 @@ namespace TDSPM.API.Migrations
                     b.HasOne("TDSPM.API.Domain.Entity.Brand", "Brand")
                         .WithMany("Cars")
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Brand");

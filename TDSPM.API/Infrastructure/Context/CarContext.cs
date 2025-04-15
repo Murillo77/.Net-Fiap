@@ -10,13 +10,13 @@ namespace TDSPM.API.Infrastructure.Context
 
         public DbSet<Brand> Brands { get; set; }
 
-        public DbSet<Accessory> Accessories { get; set; }
+        //public DbSet<Accessory> Accessories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CarMapping());
             modelBuilder.ApplyConfiguration(new BrandMapping());
-            modelBuilder.ApplyConfiguration(new AccessoryMapping());
+            //modelBuilder.ApplyConfiguration(new AccessoryMapping());
         }
     }
 }

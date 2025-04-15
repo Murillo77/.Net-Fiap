@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using TDSPM.API.Application.DTOs;
+using TDSPM.API.Application.UseCases;
+using TDSPM.API.Application.Validators;
 using TDSPM.API.Domain.Entity;
 using TDSPM.API.Infrastructure.Context;
 using TDSPM.API.Infrastructure.Persistence.Repositories;
@@ -14,9 +18,16 @@ namespace TDSPM.API.Controllers
     {
         private readonly IRepository<Car> _repositoryCar;
 
-        public CarsController(IRepository<Car> repositoryCar)
+        private readonly IRepository<Brand> _repositoryBrand;
+
+        private readonly CarUserCase _CarUserCase;
+
+
+        public CarsController(IRepository<Car> repositoryCar, IRepository<Brand> repositoryBrand, CarUserCase CarUserCase)
         {
             _repositoryCar = repositoryCar;
+            _repositoryBrand = repositoryBrand;
+            _CarUserCase = CarUserCase;
         }
 
         // GET: api/Cars
@@ -108,10 +119,22 @@ namespace TDSPM.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.ServiceUnavailable)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<Car>> PostCar(Car car)
+        public async Task<ActionResult<Car>> PostCar(CreateCarRequest createCarRequest)
         {
-            //"insert into CarKeller values ()"
-            await _repositoryCar.AddAsync(car);
+            var createCarRequestValidator = new CreateCarRequestValidator();
+            try
+            {
+                createCarRequestValidator.ValidateMessage(createCarRequest);
+            }
+            catch (ValidationException ex)
+            {
+
+                var x = ex.Message;
+                throw;
+            }
+
+            Task<Car> car = _CarUserCase.CreateCar(createCarRequest);
+       
             return CreatedAtAction("GetCar", new { id = car.Id }, car);
         }
 

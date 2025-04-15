@@ -9,7 +9,7 @@ namespace TDSPM.API.Infrastructure.Mappings
         public void Configure(EntityTypeBuilder<Accessory> builder)
         {
             builder
-                .ToTable("Accessory");
+                .ToTable("Accessory1");
 
             builder
                 .Property(accessory => accessory.Name)

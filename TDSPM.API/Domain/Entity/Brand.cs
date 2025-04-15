@@ -26,9 +26,8 @@ namespace TDSPM.API.Domain.Entity
             Name = name ?? throw new DomainException($"Nome da brand é obrigatoria");
         }
 
-        public Brand()
-        {
-            
+        private Brand()
+        {          
         }
     }
 }
